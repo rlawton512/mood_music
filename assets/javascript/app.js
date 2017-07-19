@@ -82,8 +82,22 @@ $('#goJax').on('click',function(){
 
         $.ajax(settings).done(function (response) {
             console.log(response);
+            var resp = response;
+            var newEmotion = resp.faces[0].attributes.emotion.neutral;
+        
+
+            var newImg = $('<img>');
+            $(newImg).attr('src',image1);
+            $('#emptyDiv').append(newImg);
+
+            var newPara = $('<p>');
+            $(newPara).text('neutrality level '+newEmotion);
+            $('#emptyDiv').append(newPara);
+
         });
     });
+
+
 
     };
 
