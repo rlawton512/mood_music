@@ -84,23 +84,25 @@ $('#goJax').on('click',function(){
 
             console.log(response);
             var resp = response;
-            var newEmotionObj = {
-                anger:resp.faces[0].attributes.emotion.anger,
-                disgust:resp.faces[0].attributes.emotion.disgust,
-                fear:resp.faces[0].attributes.emotion.fear,
-                happiness:resp.faces[0].attributes.emotion.happiness,
-                neutral:resp.faces[0].attributes.emotion.neutral,
-                sadness:resp.faces[0].attributes.emotion.sadness,
-                surprise:resp.faces[0].attributes.emotion.surprise
-            }
+            var emotions =["anger: ", "disgust: ", "fear: ", "happiness: ", "neutral: ", "sadness: ", "surprise: "];
+            var newEmotions = [
+                resp.faces[0].attributes.emotion.anger,
+                resp.faces[0].attributes.emotion.disgust,
+                resp.faces[0].attributes.emotion.fear,
+                resp.faces[0].attributes.emotion.happiness,
+                resp.faces[0].attributes.emotion.neutral,
+                resp.faces[0].attributes.emotion.sadness,
+                resp.faces[0].attributes.emotion.surprise
+            ];
         
             var newImg = $('<img>');
             $(newImg).attr('src',image1);
             $('#emptyDiv').append(newImg);
 
-            for (i=0;i<newEmotionObj.length;i++){
+            for (i=0;i<newEmotions.length;i++){
                 var newPara = $('<p>');
-                $(newPara).text(newEmotion[i]);
+                $(newPara).text(emotions[i]+newEmotions[i]);
+                console.log(newEmotions[i]);
                 $('#emptyDiv').append(newPara);
             }
             
