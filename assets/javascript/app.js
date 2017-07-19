@@ -1,60 +1,18 @@
 $(document).ready(function(){
 
-
+//some global variables and test images
 var APIKey = 'a5gkHawN_9QRfm3-xbiEukr6RH0quaTi';	
 var APISecret = 'T6m_6i7TTZZU0t8Ldq9-RnMDYGd64k9B';
-var image1 = "assets/images/rgos1.jpg";
+var image1;
+
+$('#submit').on('click', function(){
+        image1 = $('#image_url').val().trim();
+    });
+
 var image2 = 'https://static01.nyt.com/images/2016/01/12/arts/music/20160112_BOWIE_HP-slide-DMXR/20160112_BOWIE_HP-slide-DMXR-videoSixteenByNine3000-v2.jpg';	
 var tokenOne;
 
-//sample jax1
-function jax(){
-	$.ajax({
-        type: 'POST',
-        url: 'https://api-us.faceplusplus.com/facepp/v3/face/analyze',
-        crossDomain: true,
-        cache: false,
-        async: true,
-        data: {"api_key": APIKey, "api_secret": APISecret, "image_file": image1},
-        dataType: 'jsonp',
-        success: function(responseData) {
-           alert(JSON.stringify(responseData));
-        },
-        error: function (responseData, textStatus, errorThrown) {
-            alert(JSON.stringify(responseData));
-        }
-    });
-};
-
-//jax(); 
-
-//sample jax 2
-function jax(){
-    $.ajax({
-        url: "https://api-us.faceplusplus.com/facepp/v3/face/analyze",
-        beforeSend: function(xhr) { 
-        xhr.setRequestHeader("Authorization", "Basic " + btoa("username:password")); 
-        },
-        type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        processData: false,
-        data: {"api_key": APIKey,
-               "api_secret": APISecret,
-               "image_file": image1},
-        success: function (data) {
-            alert(JSON.stringify(data));
-        },
-        error: function(){
-            alert("Cannot get data");
-        }
-    });
-};
-
-//jax();
-
-
-//from postman
+//straight from postman with no modification
 var settings = {
   "async": true,
   "crossDomain": true,
@@ -87,55 +45,55 @@ $.ajax(settings).done(function (response) {
   console.log(response);
 });
 
-
-console.log('https://api-us.faceplusplus.com/facepp/v3/detect?api_secret='+APISecret+'&api_key='+APIKey+'&image_url='+image2);
 // postman replication
-function jax(){
+
+$('#goJax').on('click',function(){
+    event.preventDefault();
+
+    function jax(){
     var tokenOne;
-var settings = { 
-  "async": true,
-  "crossDomain": true,
-  "url": 'https://api-us.faceplusplus.com/facepp/v3/detect?api_secret='+APISecret+'&api_key='+APIKey+'&image_url='+image2,
-  "method": "POST",
-  "headers": {
-    "Access-Control-Allow-Origin": true,
-    "cache-control": "no-cache",
-    "postman-token": "5da6cb75-455b-d385-a67a-a1bfee6c6223"
-  }
-}
+    var settings = { 
+        "async": true,
+        "crossDomain": true,
+        "url": 'https://api-us.faceplusplus.com/facepp/v3/detect?api_secret='+APISecret+'&api_key='+APIKey+'&image_url='+image1,
+        "method": "POST",
+        "headers": {
+            "Access-Control-Allow-Origin": true,
+            "cache-control": "no-cache",
+        }
+    }
 
-$.ajax(settings).done(function (response) {
- tokenOne=response.faces[0].face_token;
-  console.log(response.faces[0].face_token);
+    $.ajax(settings).done(function (response) {
+        tokenOne=response.faces[0].face_token;
   
-  var settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": 'https://api-us.faceplusplus.com/facepp/v3/face/analyze?'
-  +'api_key='+APIKey+'&api_secret='+APISecret+'&face_tokens='+tokenOne+'&return_attributes='
-  +'gender%2Cage%2Cethnicity%2Cemotion%2Ceyestatus',
-  "method": "POST",
-  "headers": {
-    "Access-Control-Allow-Origin": true,
-    "cache-control": "no-cache",
-    "postman-token": "357af3aa-6c97-a0ed-3b89-066f013c8159"
-  }
-}
 
-$.ajax(settings).done(function (response) {
-  console.log(response);
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": 'https://api-us.faceplusplus.com/facepp/v3/face/analyze?'
+            +'api_key='+APIKey+'&api_secret='+APISecret+'&face_tokens='+tokenOne+'&return_attributes='
+            +'gender%2Cage%2Cethnicity%2Cemotion%2Ceyestatus',
+            "method": "POST",
+            "headers": {
+                "Access-Control-Allow-Origin": true,
+                "cache-control": "no-cache",
+            }
+        }       
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+        });
+    });
+
+    };
+
+    jax();
+
+})
+
 });
-});
 
-
-
-};
-
-jax();
-
-});
-
-// example on the website 
+// example on the website using cURL
 //curl -X POST "https://api-us.faceplusplus.com/facepp/v3/face/analyze" \
 //-F "api_key=<api_key>" \
 //-F "api_secret=<api_secret>" \
