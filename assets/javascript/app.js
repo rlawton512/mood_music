@@ -81,18 +81,29 @@ $('#goJax').on('click',function(){
         }       
 
         $.ajax(settings).done(function (response) {
+
             console.log(response);
             var resp = response;
-            var newEmotion = resp.faces[0].attributes.emotion.neutral;
+            var newEmotionObj = {
+                anger:resp.faces[0].attributes.emotion.anger,
+                disgust:resp.faces[0].attributes.emotion.disgust,
+                fear:resp.faces[0].attributes.emotion.fear,
+                happiness:resp.faces[0].attributes.emotion.happiness,
+                neutral:resp.faces[0].attributes.emotion.neutral,
+                sadness:resp.faces[0].attributes.emotion.sadness,
+                surprise:resp.faces[0].attributes.emotion.surprise
+            }
         
-
             var newImg = $('<img>');
             $(newImg).attr('src',image1);
             $('#emptyDiv').append(newImg);
 
-            var newPara = $('<p>');
-            $(newPara).text('neutrality level '+newEmotion);
-            $('#emptyDiv').append(newPara);
+            for (i=0;i<newEmotionObj.length;i++){
+                var newPara = $('<p>');
+                $(newPara).text(newEmotion[i]);
+                $('#emptyDiv').append(newPara);
+            }
+            
 
         });
     });
