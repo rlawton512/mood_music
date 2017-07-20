@@ -1,28 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>test face recog w/SkyBio</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-</head>
-<body>
+ <head>
+  <title>Chart Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
 
-<div class="container">
-	<div>
-		<input type="text" id="inputImgUrl">
-		<button id="submitImgUrl">Run</button>
-	</div>
-
-	<div id="resultsDiv">	
-	</div>
-</div>
-
-<script type="text/javascript">
-//grab input for url
-//perform ajax call
-//post results div with image and calculated attributes
-
-$('#submitImgUrl').on('click',function(){
+$(document).ready(function(){
+	$('#submitImgUrl').on('click',function(){
 	var userUrl = $('#inputImgUrl').val().trim();
 	var APIKey='dae956b6026544528d9a145149191299';
 	var APISecret = '3d1c30b4f5d746dab0f467e44a1041f4';
@@ -63,15 +48,54 @@ $('#submitImgUrl').on('click',function(){
 					   respObj.fear.confidence, respObj.happiness.confidence, 
 					   respObj.neutral_mood.confidence, respObj.sadness.confidence,
 					   respObj.surprise.confidence];
-		for (i=0; i<emotions.length; i++){
-			var newPara = $('<p>');
-			$(newPara).text(emotions[i]+": "+emoResp[i]);
-			$(newDiv).append(newPara);
-		}
+		//for (i=0; i<emotions.length; i++){
+			//var newPara = $('<p>');
+			//$(newPara).text(emotions[i]+": "+emoResp[i]);
+			//$(newDiv).append(newPara);
+		//}
 		$('#resultsDiv').prepend(newDiv);
+
+		google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Emotion', 'Confidence Value'],
+          [emotions[0],emoResp[0]],
+          [emotions[1],emoResp[1]],
+          [emotions[2],emoResp[2]],
+          [emotions[3],emoResp[3]],
+          [emotions[4],emoResp[4]],
+          [emotions[5],emoResp[5]],
+          [emotions[6],emoResp[6]]
+        ]);
+
+        var options = {
+          title: 'Emotioal Analysis',
+          hAxis: {title: 'Confidence Value',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('resultsDiv'));
+        chart.draw(data, options);
+      }
+      drawChart();
 	});
 });
-</script>
+})  
+    </script>
+</head>
+<body>
+	<div class="container">
+    	
+		<div>
+			<input type="text" id="inputImgUrl">
+			<button id="submitImgUrl">Run</button>
+		</div>
 
+		<div id="resultsDiv">	
+		</div>
+	</div>
 </body>
 </html>
+
