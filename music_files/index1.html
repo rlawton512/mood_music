@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Click the buttons to play or pause the audio.</p>
+<button id = "link">Song:  </button>
+
+<div id = "demo"></div>
+
+<!-- <blockquote class="embedly-card"><h4><a href="https://www.last.fm/music/Pharell+Williams/_/Happy">Pharrell Williams - Happy</a></h4><p>Read more on Last.fm .</p></blockquote>
+ -->
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+function displayMusic (){
+
+		// var x = $(this).attr("data-name");
+		// var queryURL = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=b164494922abda22f8cd2e53cc25ab4e&artist=pharrell&track=happy&format=json"
+
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=disgust&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+
+		//creates AJAX call for the topics being clicked 
+		$.ajax({
+			url: queryURL,
+			method: "GET"
+
+		}).done(function(response){
+			console.log(queryURL);
+			console.log("success got data", response);
+			console.log(response.tracks.track[0])
+
+			// var obj = response
+			// var myJSON = JSON.stringify(obj);
+			// $(".embedly-card").innerHTML = myJSON;		
+
+		})
+}
+
+displayMusic()
+
+
+</script>
+
+</body>
+</html>
