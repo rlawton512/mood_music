@@ -18,10 +18,9 @@
 </div>
 
 <script type="text/javascript">
-//grab input for url
-//perform ajax call
-//post results div with image and calculated attributes
 
+//grab input for image url
+//perform ajax call to SkyBio
 $('#submitImgUrl').on('click',function(){
 	var userUrl = $('#inputImgUrl').val().trim();
 	var APIKey='dae956b6026544528d9a145149191299';
@@ -51,12 +50,12 @@ $('#submitImgUrl').on('click',function(){
 		};
 		console.log(respObj);
 
+		//create a div with the submitted image and the product of the analysis
 		var newDiv = $('<div>');
 		var newImg = $('<img>');
 		$(newImg).attr('src',userUrl);
 		$(newImg).attr('width',320);
 		$(newDiv).append(newImg);
-		
 		var emotions=['anger', 'disgust', 'fear', 'happiness', 
 					  'neutral_mood', 'sadness', 'surprise'];
 		var emoResp =[respObj.anger.confidence, respObj.disgust.confidence, 
@@ -69,6 +68,22 @@ $('#submitImgUrl').on('click',function(){
 			$(newDiv).append(newPara);
 		}
 		$('#resultsDiv').prepend(newDiv);
+
+		//interpret the emotional analysis as numbers, compare the numbers to find the highest,
+		//and report the highest number/emotion
+		var emoInt=[];
+		var mostFitting=[];
+		for (i=0; i<emoResp.length; i++){
+			var confidenceValue = parseInt(emoResp[i]);
+			emoInt.push(confidenceValue);
+		}
+
+		var mostFittingA=Math.max.apply(Math,emoInt);
+		var emotionPosition = $.inArray(mostFittingA,emoInt);
+		var mostFittingB = emotions[emotionPosition];
+		mostFitting.push(mostFittingA);
+		mostFitting.push(mostFittingB);
+		console.log(mostFitting);
 	});
 });
 </script>
