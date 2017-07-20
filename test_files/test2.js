@@ -4,6 +4,7 @@ $(document).ready(function(){
 var APIKey = 'a5gkHawN_9QRfm3-xbiEukr6RH0quaTi';	
 var APISecret = 'T6m_6i7TTZZU0t8Ldq9-RnMDYGd64k9B';
 var image1;
+var image2 = "rgos1.jpg"
 
 $('#submit').on('click', function(){
         image1 = $('#image_url').val().trim();
