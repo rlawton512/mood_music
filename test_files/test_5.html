@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>test face recog w/SkyBio</title>
+	<title>Speed Test for Calls</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
 
+
 <div class="container">
-	<div>
-		<input type="text" id="inputImgUrl">
-		<button id="submitImgUrl">Run</button>
+	<div id="playerButtons">
 	</div>
 
 	<div id="resultsDiv">	
@@ -18,10 +17,26 @@
 </div>
 
 <script type="text/javascript">
-//grab input for image url
-//perform ajax call to SkyBio
-$('#submitImgUrl').on('click',function(){
-	var userUrl = $('#inputImgUrl').val().trim();
+
+	var emotionTags = ["happiness&surprise", "anger&disgust", "sadness&fear", "neutral_mood"];
+	var exampleImages = ["",
+						 "http://www.brooklynvegan.com/files/img/ah/laura-jane-grace/appel-room/laura-jane-grace-12.jpg",
+						 "",
+						 "http://mindbodynetwork.com/lib/gr/promo/david-bowie-mobile.jpg"];
+
+	for(i = 0; i <emotionTags.length; i++) {
+    	var emoButton=$('<button/>');
+    	$(emoButton).attr('ID',emotionTags[i]);
+    	$(emoButton).text(emotionTags[i]);
+    	$(emoButton).attr('class','runThis');
+    	$(emoButton).attr('data-url',exampleImages[i]);
+        $('#playerButtons').append(emoButton);
+	}
+
+
+$('.runThis').on('click',function(){
+	console.time('timer');
+	var userUrl = $(this).attr('data-url');
 	var APIKey='dae956b6026544528d9a145149191299';
 	var APISecret = '3d1c30b4f5d746dab0f467e44a1041f4';
 	var settings = {
@@ -51,10 +66,6 @@ $('#submitImgUrl').on('click',function(){
 
 		//create a div with the submitted image and the product of the analysis
 		var newDiv = $('<div>');
-		var newImg = $('<img>');
-		$(newImg).attr('src',userUrl);
-		$(newImg).attr('width',320);
-		$(newDiv).append(newImg);
 		var emotions=['anger', 'disgust', 'fear', 'happiness', 
 					  'neutral_mood', 'sadness', 'surprise'];
 		var emoResp =[respObj.anger.confidence, respObj.disgust.confidence, 
@@ -66,7 +77,6 @@ $('#submitImgUrl').on('click',function(){
 			$(newPara).text(emotions[i]+": "+emoResp[i]);
 			$(newDiv).append(newPara);
 		}
-		//$('#resultsDiv').prepend(newDiv);
 
 		//interpret the emotional analysis as numbers, compare the numbers to find the highest,
 		//and report the highest number/emotion
@@ -82,71 +92,38 @@ $('#submitImgUrl').on('click',function(){
 		mostFitting.push(mostFittingA);
 		mostFitting.push(mostFittingB);
 		console.log(mostFitting);
+		var neem;
 	
 
 	//split music call into conditions based on emotional results
 	if (mostFitting[1]==="happiness"||mostFitting[1]==="surprise"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
-		 
-		$.ajax({
-			url: queryURL,
-			method: "GET"
-		}).done(function(response){
-			var musicResponse = response
-			console.log("success got data", musicResponse);
-			var randomNo = Math.floor(Math.random()*10);
-			console.log(musicResponse.tracks.track[randomNo].url);
-			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);		
-		})
-	}else if(mostFitting[1]==="anger"||mostFitting[1]==="disgust"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
-		 
-		$.ajax({
-			url: queryURL,
-			method: "GET"
-		}).done(function(response){
-			var musicResponse = response
-			console.log("success got data", musicResponse);
-			var randomNo = Math.floor(Math.random()*10);
-			console.log(musicResponse.tracks.track[randomNo].url);
-			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);		
-		})
-	}else if(mostFitting[1]==="sadness"||mostFitting[1]==="fear"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
-		 
-		$.ajax({
-			url: queryURL,
-			method: "GET"
-		}).done(function(response){
-			var musicResponse = response
-			console.log("success got data", musicResponse);
-			var randomNo = Math.floor(Math.random()*10);
-			console.log(musicResponse.tracks.track[randomNo].url);
-			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);		
-		})
-	}else{
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=chill&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		neem = "happy";
+	}else if (mostFitting[1]==="anger"||mostFitting[1]==="disgust"){
+		neem = "angry";
+	}else if (mostFitting[1]==="sadness"||mostFitting[1]==="fear"){
+		neem = "sad";
+	}else
+		neem = "chill"; 
 
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag="+neem+"&limit=25&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json";
+		 
 		$.ajax({
 			url: queryURL,
 			method: "GET"
 		}).done(function(response){
 			var musicResponse = response
 			console.log("success got data", musicResponse);
-			var randomNo = Math.floor(Math.random()*10);
+			var randomNo = Math.floor(Math.random()*25);
 			console.log(musicResponse.tracks.track[randomNo].url);
 			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);		
+			$('#resultsDiv').prepend(newDiv);
+			console.timeEnd('timer');		
 		})
-	};
+	
 	});
-	$('#inputImgUrl').val('');
 
 });
-</script>
 
+</script>
 </body>
 </html>
