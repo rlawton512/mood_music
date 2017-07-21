@@ -46,7 +46,7 @@ $('#submitImgUrl').on('click',function(){
 			$(newPara).text(emotions[i]+": "+emoResp[i]);
 			$(newDiv).append(newPara);
 		}
-		$('#resultsDiv').prepend(newDiv);
+		//$('#resultsDiv').prepend(newDiv);
 
 		//interpret the emotional analysis as numbers, compare the numbers to find the highest,
 		//and report the highest number/emotion
@@ -67,43 +67,62 @@ $('#submitImgUrl').on('click',function(){
 	//split music call into conditions based on emotional results
 	if (mostFitting[1]==="happiness"||mostFitting[1]==="surprise"){
 		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
-		//creates AJAX call for the topics being clicked 
+		 
 		$.ajax({
 			url: queryURL,
 			method: "GET"
 		}).done(function(response){
 			var musicResponse = response
-			console.log("success got data", musicResponse);		
+			console.log("success got data", musicResponse);
+			var randomNo = Math.floor(Math.random()*10);
+			console.log(musicResponse.tracks.track[randomNo].url)
+			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
+			$('#resultsDiv').prepend(newDiv);		
 		})
 	}else if(mostFitting[1]==="anger"||mostFitting[1]==="disgust"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
-		//creates AJAX call for the topics being clicked 
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		 
 		$.ajax({
 			url: queryURL,
 			method: "GET"
 		}).done(function(response){
 			var musicResponse = response
-			console.log("success got data", musicResponse);		
+			console.log("success got data", musicResponse);
+			var randomNo = Math.floor(Math.random()*10);
+			console.log(musicResponse.tracks.track[randomNo].url)
+			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
+			$('#resultsDiv').prepend(newDiv);		
 		})
 	}else if(mostFitting[1]==="sadness"||mostFitting[1]==="fear"){
 		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
-		//creates AJAX call for the topics being clicked 
+		 
 		$.ajax({
 			url: queryURL,
 			method: "GET"
 		}).done(function(response){
 			var musicResponse = response
-			console.log("success got data", musicResponse);		
+			console.log("success got data", musicResponse);
+			var randomNo = Math.floor(Math.random()*10);
+			console.log(musicResponse.tracks.track[randomNo].url)
+			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
+			$('#resultsDiv').prepend(newDiv);		
 		})
 	}else{
 		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=chill&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+
 		$.ajax({
 			url: queryURL,
 			method: "GET"
 		}).done(function(response){
 			var musicResponse = response
-			console.log("success got data", musicResponse);		
+			console.log("success got data", musicResponse);
+			var randomNo = Math.floor(Math.random()*10);
+			console.log(musicResponse.tracks.track[randomNo].url)
+			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
+			$('#resultsDiv').prepend(newDiv);		
 		})
 	};
 	});
+	$('#inputImgUrl').val('');
+
 });
