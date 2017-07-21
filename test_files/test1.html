@@ -82,6 +82,49 @@ $('#submitImgUrl').on('click',function(){
 		mostFitting.push(mostFittingA);
 		mostFitting.push(mostFittingB);
 		console.log(mostFitting);
+	
+
+	//split music call into conditions based on emotional results
+	if (mostFitting[1]==="happiness"||mostFitting[1]==="surprise"){
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		//creates AJAX call for the topics being clicked 
+		$.ajax({
+			url: queryURL,
+			method: "GET"
+		}).done(function(response){
+			var musicResponse = response
+			console.log("success got data", musicResponse);		
+		})
+	}else if(mostFitting[1]==="anger"||mostFitting[1]==="disgust"){
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		//creates AJAX call for the topics being clicked 
+		$.ajax({
+			url: queryURL,
+			method: "GET"
+		}).done(function(response){
+			var musicResponse = response
+			console.log("success got data", musicResponse);		
+		})
+	}else if(mostFitting[1]==="sadness"||mostFitting[1]==="fear"){
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		//creates AJAX call for the topics being clicked 
+		$.ajax({
+			url: queryURL,
+			method: "GET"
+		}).done(function(response){
+			var musicResponse = response
+			console.log("success got data", musicResponse);		
+		})
+	}else{
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=chill&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		$.ajax({
+			url: queryURL,
+			method: "GET"
+		}).done(function(response){
+			var musicResponse = response
+			console.log("success got data", musicResponse);		
+		})
+	};
 	});
 });
 </script>
