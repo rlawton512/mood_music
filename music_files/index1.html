@@ -5,22 +5,27 @@
 <p>Click the buttons to play or pause the audio.</p>
 <button id = "link">Song:  </button>
 
-<div id = "demo"></div>
+<p id = "artist1">Artist:<br></p>
+<p id = "pic1">
 
-<!-- <blockquote class="embedly-card"><h4><a href="https://www.last.fm/music/Pharell+Williams/_/Happy">Pharrell Williams - Happy</a></h4><p>Read more on Last.fm .</p></blockquote>
- -->
-<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<p id = "artist2">Artist:<br></p>
+<p id = "pic2">
+
+<p id = "artist3">Artist:<br></p>
+<p id = "pic3">
+	
+	<!-- <img src="" class = 'stuff' alt=""> -->
+</p>
+
+ --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
 
 function displayMusic (){
 
-		// var x = $(this).attr("data-name");
-		// var queryURL = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=b164494922abda22f8cd2e53cc25ab4e&artist=pharrell&track=happy&format=json"
+		//angry&disgust, fear&sadness, happy&surprise, chill
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=disgust&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
-
-		//creates AJAX call for the topics being clicked 
+		//creates AJAX call for the music tag being clicked 
 		$.ajax({
 			url: queryURL,
 			method: "GET"
@@ -28,8 +33,27 @@ function displayMusic (){
 		}).done(function(response){
 			console.log(queryURL);
 			console.log("success got data", response);
-			console.log(response.tracks.track[0])
+			console.log(response.tracks.track[0].artist.name);
+			$("#artist1").append(response.tracks.track[0].artist.name+"<br>");
+			$("#artist2").append(response.tracks.track[1].artist.name+"<br>");
+			$("#artist3").append(response.tracks.track[2].artist.name+"<br>");
 
+
+			var image1 = $('<img>')
+					image1.attr('src' , response.tracks.track[0].image[2]["#text"])
+			$("#pic1").append(image1);
+
+			var image2 = $('<img>')
+					image2.attr('src' , response.tracks.track[1].image[2]["#text"])
+			$("#pic2").append(image2);
+
+			var image3 = $('<img>')
+					image3.attr('src' , response.tracks.track[2].image[2]["#text"])
+			$("#pic3").append(image3);
+
+		//.tracks.track["0"].image[2]["#text"]
+			//.tracks.track[2].image[2]["#text"]
+			//$('.stuff').attr('src', response.tracks.track[0].image[2]["#text"])
 			// var obj = response
 			// var myJSON = JSON.stringify(obj);
 			// $(".embedly-card").innerHTML = myJSON;		
