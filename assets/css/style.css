@@ -1,3 +1,11 @@
 #picDisplay {
 	margin-top: 30px;
 }
+
+body {
+	background: url("https://onehdwallpaper.com/wp-content/uploads/2015/07/Beautiful-Music-HD-Wallpapers.jpg");
+}
+
+.container {
+	opacity: 0.9;
+}
