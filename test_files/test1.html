@@ -4,6 +4,12 @@
 	<title>test face recog w/SkyBio</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<style type="text/css">
+		.loading {
+			display: inherit;
+		}
+	</style>
 </head>
 <body>
 
@@ -11,6 +17,7 @@
 	<div>
 		<input type="text" id="inputImgUrl">
 		<button id="submitImgUrl">Run</button>
+		<iframe src="https://giphy.com/embed/6gWNMuQjEVSfK" display="none" width="64" height="64" frameBorder="0" class="giphy-embed modal" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/spinning-6gWNMuQjEVSfK"></a></p>
 	</div>
 
 	<div id="resultsDiv">	
@@ -20,7 +27,11 @@
 <script type="text/javascript">
 //grab input for image url
 //perform ajax call to SkyBio
+$(document).ready(function(){
+
 $('#submitImgUrl').on('click',function(){
+	event.preventDefault();
+	$('.modal').addClass("loading");
 	var userUrl = $('#inputImgUrl').val().trim();
 	var APIKey='dae956b6026544528d9a145149191299';
 	var APISecret = '3d1c30b4f5d746dab0f467e44a1041f4';
@@ -86,7 +97,7 @@ $('#submitImgUrl').on('click',function(){
 
 	//split music call into conditions based on emotional results
 	if (mostFitting[1]==="happiness"||mostFitting[1]==="surprise"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		 
 		$.ajax({
 			url: queryURL,
@@ -97,7 +108,8 @@ $('#submitImgUrl').on('click',function(){
 			var randomNo = Math.floor(Math.random()*10);
 			console.log(musicResponse.tracks.track[randomNo].url)
 			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);		
+			$('#resultsDiv').prepend(newDiv);
+			$('.modal').removeClass("loading");		
 		})
 	}else if(mostFitting[1]==="anger"||mostFitting[1]==="disgust"){
 		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
@@ -111,10 +123,11 @@ $('#submitImgUrl').on('click',function(){
 			var randomNo = Math.floor(Math.random()*10);
 			console.log(musicResponse.tracks.track[randomNo].url)
 			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);		
+			$('#resultsDiv').prepend(newDiv);
+			$('.modal').removeClass("loading");		
 		})
 	}else if(mostFitting[1]==="sadness"||mostFitting[1]==="fear"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		 
 		$.ajax({
 			url: queryURL,
@@ -125,10 +138,11 @@ $('#submitImgUrl').on('click',function(){
 			var randomNo = Math.floor(Math.random()*10);
 			console.log(musicResponse.tracks.track[randomNo].url)
 			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);		
+			$('#resultsDiv').prepend(newDiv);
+			$('.modal').removeClass("loading");		
 		})
 	}else{
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=chill&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=chill&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 
 		$.ajax({
 			url: queryURL,
@@ -139,12 +153,14 @@ $('#submitImgUrl').on('click',function(){
 			var randomNo = Math.floor(Math.random()*10);
 			console.log(musicResponse.tracks.track[randomNo].url)
 			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);		
+			$('#resultsDiv').prepend(newDiv);
+			$('.modal').removeClass("loading");		
 		})
 	};
 	});
 	$('#inputImgUrl').val('');
 
+});
 });
 </script>
 
