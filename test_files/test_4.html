@@ -4,55 +4,55 @@
 	<title>Speed Test for Calls</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<style type="text/css">
+		.loading {
+			display: inherit;
+		}
+	</style>
 </head>
 <body>
 
-
-<div class="container">
-	<div id="playerButtons">
+	<div>
+		<input type="text" id="inputImgUrl">
+		<button id="submitImgUrl">Run</button>
+		<iframe src="https://giphy.com/embed/6gWNMuQjEVSfK" display="none" width="64" height="64" frameBorder="0" class="giphy-embed modal" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/spinning-6gWNMuQjEVSfK"></a></p>
 	</div>
 
 	<div id="resultsDiv">	
 	</div>
-</div>
 
 <script type="text/javascript">
+$(document).ready(function(){
 
-	var emotionTags = ["happiness&surprise", "anger&disgust", "sadness&fear", "neutral_mood"];
-	var exampleImages = ["",
-						 "http://www.brooklynvegan.com/files/img/ah/laura-jane-grace/appel-room/laura-jane-grace-12.jpg",
-						 "",
-						 "http://mindbodynetwork.com/lib/gr/promo/david-bowie-mobile.jpg"];
+	$('#submitImgUrl').on('click',function(){
+		console.time('timer');
+		if ($('#inputImgUrl').val().trim()===''){
+			var errorMessage = $('<h3>');
+			$(errorMessage).text('Please input a valid image URL');
+			$(errorMessage).attr('class','inputError');
+			$('#resultsDiv').append(errorMessage);
+			return;
+		}
 
-	for(i = 0; i <emotionTags.length; i++) {
-    	var emoButton=$('<button/>');
-    	$(emoButton).attr('ID',emotionTags[i]);
-    	$(emoButton).text(emotionTags[i]);
-    	$(emoButton).attr('class','runThis');
-    	$(emoButton).attr('data-url',exampleImages[i]);
-        $('#playerButtons').append(emoButton);
-	}
-
-
-$('.runThis').on('click',function(){
-	console.time('timer');
-	var userUrl = $(this).attr('data-url');
-	var APIKey='dae956b6026544528d9a145149191299';
-	var APISecret = '3d1c30b4f5d746dab0f467e44a1041f4';
-	var settings = {
-  "async": true,
-  "crossDomain": true,
-  "url": "http://api.skybiometry.com/fc/faces/detect?api_key="+APIKey+"&api_secret="+APISecret+"&urls="+userUrl+"&attributes=all",
-  "method": "POST",
-  "headers": {
-    "cache-control": "no-cache",
-    "postman-token": "7cfb77df-6049-346b-87d8-63ba7649762f"
-  }
-	}
+		else 
+		$('.modal').addClass("loading");
+		$('.inputError').text('');
+		var userUrl = $('#inputImgUrl').val().trim();
+		var APIKey='dae956b6026544528d9a145149191299';
+		var APISecret = '3d1c30b4f5d746dab0f467e44a1041f4';
+		var settings = {
+  	"async": true,
+  	"crossDomain": true,
+  	"url": "http://api.skybiometry.com/fc/faces/detect?api_key="+APIKey+"&api_secret="+APISecret+"&urls="+userUrl+"&attributes=all",
+  	"method": "POST",
+  	"headers": {
+    	"cache-control": "no-cache",
+    	"postman-token": "7cfb77df-6049-346b-87d8-63ba7649762f"
+  	}
+		}
 
 	$.ajax(settings).done(function (response) {
 		var resp = response;
-		console.log(resp);
 		var respObj = {
 			anger:resp.photos[0].tags[0].attributes.anger,
 			disgust:resp.photos[0].tags[0].attributes.disgust,
@@ -62,10 +62,13 @@ $('.runThis').on('click',function(){
 			sadness:resp.photos[0].tags[0].attributes.sadness,
 			surprise:resp.photos[0].tags[0].attributes.surprise
 		};
-		console.log(respObj);
 
 		//create a div with the submitted image and the product of the analysis
 		var newDiv = $('<div>');
+		var newImg = $('<img>');
+		$(newImg).attr('src',userUrl);
+		$(newImg).attr('width',320);
+		$(newDiv).append(newImg);
 		var emotions=['anger', 'disgust', 'fear', 'happiness', 
 					  'neutral_mood', 'sadness', 'surprise'];
 		var emoResp =[respObj.anger.confidence, respObj.disgust.confidence, 
@@ -96,71 +99,33 @@ $('.runThis').on('click',function(){
 
 	//split music call into conditions based on emotional results
 	if (mostFitting[1]==="happiness"||mostFitting[1]==="surprise"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=25&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
-		 
-		$.ajax({
-			url: queryURL,
-			method: "GET"
-		}).done(function(response){
-			var musicResponse = response
-			console.log("success got data", musicResponse);
-			var randomNo = Math.floor(Math.random()*25);
-			console.log(musicResponse.tracks.track[randomNo].url);
-			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);
-			console.timeEnd('timer');		
-		})
-	}else if(mostFitting[1]==="anger"||mostFitting[1]==="disgust"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=25&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
-		 
-		$.ajax({
-			url: queryURL,
-			method: "GET"
-		}).done(function(response){
-			var musicResponse = response
-			console.log("success got data", musicResponse);
-			var randomNo = Math.floor(Math.random()*25);
-			console.log(musicResponse.tracks.track[randomNo].url);
-			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);
-			console.timeEnd('timer');		
-		})
-	}else if(mostFitting[1]==="sadness"||mostFitting[1]==="fear"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=25&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
-		 
-		$.ajax({
-			url: queryURL,
-			method: "GET"
-		}).done(function(response){
-			var musicResponse = response
-			console.log("success got data", musicResponse);
-			var randomNo = Math.floor(Math.random()*25);
-			console.log(musicResponse.tracks.track[randomNo].url);
-			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);
-			console.timeEnd('timer');		
-		})
-	}else{
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=chill&limit=25&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		neem = "happy";
+	}else if (mostFitting[1]==="anger"||mostFitting[1]==="disgust"){
+		neem = "angry";
+	}else if (mostFitting[1]==="sadness"||mostFitting[1]==="fear"){
+		neem = "sad";
+	}else
+		neem = "chill"; 
 
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag="+neem+"&limit=25&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json";
+		 
 		$.ajax({
 			url: queryURL,
 			method: "GET"
 		}).done(function(response){
 			var musicResponse = response
-			console.log("success got data", musicResponse);
 			var randomNo = Math.floor(Math.random()*25);
-			console.log(musicResponse.tracks.track[randomNo].url)
+			console.log(musicResponse.tracks.track[randomNo].url);
 			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
 			$('#resultsDiv').prepend(newDiv);
+			$('.modal').removeClass("loading");	
 			console.timeEnd('timer');		
 		})
-	};
 	
 	});
-	
+	$('#inputImgUrl').val('');
+	});
 });
-
 </script>
 </body>
 </html>
