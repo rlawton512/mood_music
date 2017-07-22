@@ -4,6 +4,7 @@
 	<title>Speed Test for Calls</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<style type="text/css">
 		.loading {
 			display: inherit;
@@ -11,16 +12,16 @@
 	</style>
 </head>
 <body>
-
+<div class="container">
 	<div>
 		<input type="text" id="inputImgUrl">
 		<button id="submitImgUrl">Run</button>
 		<iframe src="https://giphy.com/embed/6gWNMuQjEVSfK" display="none" width="64" height="64" frameBorder="0" class="giphy-embed modal"></iframe>
 	</div>
 
-	<div id="resultsDiv">	
-	</div>
-
+	<div id="resultsDiv"></div>
+	<div id="barchart_values"></div>
+</div>
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -43,17 +44,17 @@ $(document).ready(function(){
 			0: {APIKey: 'e27b4ba8b3e4451395a8bb74b7434c36',
 				APISecret: '8ccbe345abbd40ee94acd3df508b845a',
 				owner: 'mollie'},
-			1: {APIKey: '0',
-				APISecret: '0',
+			1: {APIKey: '3a9ca945f04a44bf8f8767ff021d37bc',
+				APISecret: 'affb8c62eade4475bea1118afb5aa2cf',
 				owner: 'muhammad'},
-			2: {APIKey:'0',
-				APISecret:'0',
+			2: {APIKey:'d589973d60d841f185c040f8acc02824',
+				APISecret:'da910cf2a45b4dbe9006a99b0ac2efc0',
 				owner: 'raven'},
 			3: {APIKey: 'dae956b6026544528d9a145149191299',
 				APISecret: '3d1c30b4f5d746dab0f467e44a1041f4',
 				owner: 'tanner'} 
 		}
-		var keySelector = Math.floor(Math.random()*2);
+		var keySelector = Math.floor(Math.random()*4);
 		var choiceKey = keysObj[keySelector].APIKey;
 		var choiceSecret = keysObj[keySelector].APISecret;
 		console.log(keysObj[keySelector].owner);
@@ -93,11 +94,45 @@ $(document).ready(function(){
 					   respObj.fear.confidence, respObj.happiness.confidence, 
 					   respObj.neutral_mood.confidence, respObj.sadness.confidence,
 					   respObj.surprise.confidence];
-		for (i=0; i<emotions.length; i++){
-			var newPara = $('<p>');
-			$(newPara).text(emotions[i]+": "+emoResp[i]);
-			$(newDiv).append(newPara);
-		}
+
+		//charting emotions with google charts
+		google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+            ["Element", "Density", { role: "style" } ],
+            [emotions[0], emoResp[0], "#b87333"],
+            [emotions[1], emoResp[1], "silver"],
+            [emotions[2], emoResp[2], "gold"],
+            [emotions[3], emoResp[3], "color: #8a2be2"],
+            [emotions[4], emoResp[4], "color: #7fff00"],
+            [emotions[5], emoResp[5], "color: #ff7f50"],
+            [emotions[6], emoResp[6], "color: #f5f5f5"],
+          ]);
+
+          var view = new google.visualization.DataView(data);
+          view.setColumns([0, 1,
+                           { calc: "stringify",
+                             sourceColumn: 1,
+                             type: "string",
+                             role: "annotation" },
+                           2]);
+
+          var options = {
+            title: "Your Mood",
+            width: 320,
+            bar: {groupWidth: "95%"},
+            legend: { position: "none" },
+          };
+          var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
+          chart.draw(view, options);
+        }
+  
+		//for (i=0; i<emotions.length; i++){
+			//var newPara = $('<p>');
+			//$(newPara).text(emotions[i]+": "+emoResp[i]);
+			//$(newDiv).append(newPara);
+		//}
 
 		//interpret the emotional analysis as numbers, compare the numbers to find the highest,
 		//and report the highest number/emotion
@@ -131,16 +166,30 @@ $(document).ready(function(){
 			url: queryURL,
 			method: "GET"
 		}).done(function(response){
-			var musicResponse = response
-			var randomNo = Math.floor(Math.random()*25);
-			console.log(musicResponse.tracks.track[randomNo].url);
-			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
-			$('#resultsDiv').prepend(newDiv);
-			$('.modal').removeClass("loading");	
-			console.timeEnd('timer');		
-		})
-	
-	});
+
+			var musicResponse = response;
+			var randomNumbers = [];
+			var nonRepetition = 25;
+    			if (!randomNumbers.length) {
+        			for (var i = 1; i <= nonRepetition; i++) {
+            		randomNumbers.push(i);
+        			}
+    			}
+    			for (i=0;i<10;i++){
+    				var index = Math.floor(Math.random() * randomNumbers.length);
+    				var randomNo = randomNumbers[index];
+    				console.log("track no "+randomNo);
+    				$(newDiv).prepend(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
+					randomNumbers.splice(index, 1);
+    			}
+    			console.log('it works');
+		});
+			
+		$('#resultsDiv').prepend(newDiv);
+		$('.modal').removeClass("loading");	
+		console.timeEnd('timer');	
+
+		});
 	$('#inputImgUrl').val('');
 	});
 });
