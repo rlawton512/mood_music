@@ -39,11 +39,11 @@
         $('#playerButtons').append(emoButton);
 	}
 
-
 $('.runThis').on('click',function(){
 	event.preventDefault();
 	console.time('timer');
 	$('.modal').addClass("loading");
+
 	var userUrl = $(this).attr('data-url');
 	var APIKey='dae956b6026544528d9a145149191299';
 	var APISecret = '3d1c30b4f5d746dab0f467e44a1041f4';
