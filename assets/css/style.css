@@ -9,3 +9,17 @@ body {
 .container {
 	opacity: 0.9;
 }
+
+.graph {
+	padding: 0px;
+}
+
+
+
+.main {
+	margin-top: 80px;
+}
+
+.page-header {
+	text-align: center;
+}

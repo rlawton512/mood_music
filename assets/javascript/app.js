@@ -35,7 +35,8 @@ $('#submitImgUrl').on('click',function(){
 		var newDiv = $('<div>');
 		var newImg = $('<img>');
 		$(newImg).attr('src',userUrl);
-		$(newImg).attr('width',320);
+		$(newImg).attr('width',400);
+		$(newImg).attr('hight',400);
 		$(picDisplay).html(newImg);
 		var emotions=['anger', 'disgust', 'fear', 'happiness', 
 					  'neutral_mood', 'sadness', 'surprise'];
@@ -76,12 +77,12 @@ $('#submitImgUrl').on('click',function(){
 
           var options = {
             title: "Your Mood",
-            width: 350,
-            height: 200,
+            width: 360,
+            height: 300,
             bar: {groupWidth: "95%"},
             legend: { position: "none" },
           };
-          var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
+          var chart = new google.visualization.BarChart(document.getElementById("resultsDiv"));
           chart.draw(view, options);
       }
   }
@@ -121,7 +122,7 @@ $('#submitImgUrl').on('click',function(){
 			var randomNo = Math.floor(Math.random()*10);
 			for (var i = 0; i < 9; i++) {
 				songsDiv.append(`<a href=${musicResponse.tracks.track[i].url} target="_blank"> ${musicResponse.tracks.track[i].artist.name +", "+ musicResponse.tracks.track[i].name}</a><br>`);
-				$('#resultsDiv').html(newDiv);
+				// $('#resultsDiv').html(newDiv);
 				$('#displaySongs').html(songsDiv);	
 			}	
 		})
@@ -137,7 +138,7 @@ $('#submitImgUrl').on('click',function(){
 			var randomNo = Math.floor(Math.random()*10);
 			for (var i = 0; i < 9; i++) {
 				songsDiv.append(`<a href=${musicResponse.tracks.track[i].url} target="_blank"> ${musicResponse.tracks.track[i].artist.name +", "+ musicResponse.tracks.track[i].name}</a><br>`);
-				$('#resultsDiv').html(newDiv);
+				// $('#resultsDiv').html(newDiv);
 				$('#displaySongs').html(songsDiv);	
 			}	
 		})
@@ -153,7 +154,7 @@ $('#submitImgUrl').on('click',function(){
 			var randomNo = Math.floor(Math.random()*10);
 			for (var i = 0; i < 9; i++) {
 				songsDiv.append(`<a href=${musicResponse.tracks.track[i].url} target="_blank"> ${musicResponse.tracks.track[i].artist.name +", "+ musicResponse.tracks.track[i].name}</a><br>`);
-				$('#resultsDiv').html(newDiv);
+				// $('#resultsDiv').html(newDiv);
 				$('#displaySongs').html(songsDiv);	
 			}
 				
@@ -170,7 +171,7 @@ $('#submitImgUrl').on('click',function(){
 			var randomNo = Math.floor(Math.random()*10);
 			for (var i = 0; i < 9; i++) {
 				songsDiv.append(`<a href=${musicResponse.tracks.track[i].url} target="_blank"> ${musicResponse.tracks.track[i].artist.name +", "+ musicResponse.tracks.track[i].name}</a><br>`);
-				$('#resultsDiv').html(newDiv);
+				// $('#resultsDiv').html(newDiv);
 				$('#displaySongs').html(songsDiv);	
 			}		
 		})
@@ -181,6 +182,21 @@ $('#submitImgUrl').on('click',function(){
 
 	$('#inputImgUrl').val('');
 
+});
+
+$( document ).ready(function() {
+    console.log( "ready!" );
+
+$(document).on('click' , "#addSong" , function(event){
+ 
+        event.preventDefault();
+        
+	 var baseUrl = 'http://www.youtube.com/embed?listType=search&list=';
+	 var searchField = $("#yourTextField").val();
+	 var targetUrl = baseUrl + searchField + "&autoplay=1";
+	 
+	 $("#yourIframe").attr("src", targetUrl);
+ 	});
 });
 
 
