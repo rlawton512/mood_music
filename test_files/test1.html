@@ -30,8 +30,18 @@
 $(document).ready(function(){
 
 $('#submitImgUrl').on('click',function(){
-	event.preventDefault();
+
+	if ($('#inputImgUrl').val().trim()===''){
+		var errorMessage = $('<h3>');
+		$(errorMessage).text('Please input a valid image URL');
+		$(errorMessage).attr('class','inputError');
+		$('#resultsDiv').append(errorMessage);
+		return;
+	}
+
+	else 
 	$('.modal').addClass("loading");
+	$('.inputError').text('');
 	var userUrl = $('#inputImgUrl').val().trim();
 	var APIKey='dae956b6026544528d9a145149191299';
 	var APISecret = '3d1c30b4f5d746dab0f467e44a1041f4';
@@ -97,7 +107,7 @@ $('#submitImgUrl').on('click',function(){
 
 	//split music call into conditions based on emotional results
 	if (mostFitting[1]==="happiness"||mostFitting[1]==="surprise"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=25&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		 
 		$.ajax({
 			url: queryURL,
@@ -105,14 +115,14 @@ $('#submitImgUrl').on('click',function(){
 		}).done(function(response){
 			var musicResponse = response
 			console.log("success got data", musicResponse);
-			var randomNo = Math.floor(Math.random()*10);
+			var randomNo = Math.floor(Math.random()*25);
 			console.log(musicResponse.tracks.track[randomNo].url)
 			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
 			$('#resultsDiv').prepend(newDiv);
 			$('.modal').removeClass("loading");		
 		})
 	}else if(mostFitting[1]==="anger"||mostFitting[1]==="disgust"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=25&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		 
 		$.ajax({
 			url: queryURL,
@@ -120,14 +130,14 @@ $('#submitImgUrl').on('click',function(){
 		}).done(function(response){
 			var musicResponse = response
 			console.log("success got data", musicResponse);
-			var randomNo = Math.floor(Math.random()*10);
+			var randomNo = Math.floor(Math.random()*25);
 			console.log(musicResponse.tracks.track[randomNo].url)
 			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
 			$('#resultsDiv').prepend(newDiv);
 			$('.modal').removeClass("loading");		
 		})
 	}else if(mostFitting[1]==="sadness"||mostFitting[1]==="fear"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=25&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		 
 		$.ajax({
 			url: queryURL,
@@ -135,14 +145,14 @@ $('#submitImgUrl').on('click',function(){
 		}).done(function(response){
 			var musicResponse = response
 			console.log("success got data", musicResponse);
-			var randomNo = Math.floor(Math.random()*10);
+			var randomNo = Math.floor(Math.random()*25);
 			console.log(musicResponse.tracks.track[randomNo].url)
 			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
 			$('#resultsDiv').prepend(newDiv);
 			$('.modal').removeClass("loading");		
 		})
 	}else{
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=chill&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=chill&limit=25&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 
 		$.ajax({
 			url: queryURL,
@@ -150,7 +160,7 @@ $('#submitImgUrl').on('click',function(){
 		}).done(function(response){
 			var musicResponse = response
 			console.log("success got data", musicResponse);
-			var randomNo = Math.floor(Math.random()*10);
+			var randomNo = Math.floor(Math.random()*25);
 			console.log(musicResponse.tracks.track[randomNo].url)
 			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
 			$('#resultsDiv').prepend(newDiv);
