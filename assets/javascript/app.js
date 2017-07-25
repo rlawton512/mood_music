@@ -41,7 +41,7 @@ $('#submitImgUrl').on('click',function(){
   "async": true,
   "crossDomain": true,
 
-  "url": "http://api.skybiometry.com/fc/faces/detect?api_key="+choiceKey+"&api_secret="+choiceSecret+"&urls="+userUrl+"&attributes=all",
+  "url": "https://api.skybiometry.com/fc/faces/detect?api_key="+choiceKey+"&api_secret="+choiceSecret+"&urls="+userUrl+"&attributes=all",
 
   "method": "POST",
   "headers": {
