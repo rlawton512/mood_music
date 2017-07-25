@@ -3,7 +3,7 @@ var APISecret = 'affb8c62eade4475bea1118afb5aa2cf';
 
 
 $("#happy").on("click", function() {
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "https://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		var songsDiv = $('<div>'); 
 		$.ajax({
 			url: queryURL,
@@ -21,7 +21,7 @@ $("#happy").on("click", function() {
 	});
 
 $("#sad").on("click", function() {
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "https://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		var songsDiv = $('<div>'); 
 		$.ajax({
 			url: queryURL,
@@ -39,7 +39,7 @@ $("#sad").on("click", function() {
 	});
 
 $("#chill").on("click", function() {
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "https://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		var songsDiv = $('<div>'); 
 		$.ajax({
 			url: queryURL,
@@ -57,7 +57,7 @@ $("#chill").on("click", function() {
 	});
 
 $("#anger").on("click", function() {
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "https://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		var songsDiv = $('<div>'); 
 		$.ajax({
 			url: queryURL,

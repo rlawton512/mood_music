@@ -9,7 +9,7 @@ $('#submitImgUrl').on('click',function(){
 	var settings = {
   "async": true,
   "crossDomain": true,
-  "url": "http://api.skybiometry.com/fc/faces/detect?api_key="+APIKey+"&api_secret="+APISecret+"&urls="+userUrl+"&attributes=all",
+  "url": "https://api.skybiometry.com/fc/faces/detect?api_key="+APIKey+"&api_secret="+APISecret+"&urls="+userUrl+"&attributes=all",
   "method": "POST",
   "headers": {
     "cache-control": "no-cache",
@@ -111,7 +111,7 @@ $('#submitImgUrl').on('click',function(){
 
 	//split music call into conditions based on emotional results
 	if (mostFitting[1]==="happiness"||mostFitting[1]==="surprise"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "https://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=happy&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		 
 		$.ajax({
 			url: queryURL,
@@ -126,7 +126,7 @@ $('#submitImgUrl').on('click',function(){
 			}	
 		})
 	}else if(mostFitting[1]==="anger"||mostFitting[1]==="disgust"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "https://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=angry&limit=10&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		 
 		$.ajax({
 			url: queryURL,
@@ -141,7 +141,7 @@ $('#submitImgUrl').on('click',function(){
 			}	
 		})
 	}else if(mostFitting[1]==="sadness"||mostFitting[1]==="fear"){
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "https://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=sad&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 		 
 		$.ajax({
 			url: queryURL,
@@ -157,7 +157,7 @@ $('#submitImgUrl').on('click',function(){
 				
 		})
 	}else{
-		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=chill&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
+		var queryURL = "https://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=chill&limit=3&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json"
 
 		$.ajax({
 			url: queryURL,
@@ -187,7 +187,7 @@ $(document).on('click' , "#addSong" , function(event){
  
         event.preventDefault();
         
-	 var baseUrl = 'http://www.youtube.com/embed?listType=search&list=';
+	 var baseUrl = 'https://www.youtube.com/embed?listType=search&list=';
 	 var searchField = $("#yourTextField").val();
 	 var targetUrl = baseUrl + searchField + "&autoplay=1";
 	 
