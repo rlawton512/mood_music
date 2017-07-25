@@ -1,15 +1,48 @@
 //grab input for image url
 //perform ajax call to SkyBio
 
-
 $('#submitImgUrl').on('click',function(){
+		console.time('timer');
+		if ($('#inputImgUrl').val().trim()===''){
+			var errorMessage = $('<h3>');
+			$(errorMessage).text('Please input a valid image URL');
+			$(errorMessage).attr('class','inputError');
+			$('#resultsDiv').append(errorMessage);
+			return;
+		}
+
+	else 
+		$('.modal').addClass("loading");
+		$('.inputError').text('');
+		var userUrl = $('#inputImgUrl').val().trim();
+
+		var keysObj = {
+			0: {APIKey: 'e27b4ba8b3e4451395a8bb74b7434c36',
+				APISecret: '8ccbe345abbd40ee94acd3df508b845a',
+				owner: 'mollie'},
+			1: {APIKey: '3a9ca945f04a44bf8f8767ff021d37bc',
+				APISecret: 'affb8c62eade4475bea1118afb5aa2cf',
+				owner: 'muhammad'},
+			2: {APIKey:'d589973d60d841f185c040f8acc02824',
+				APISecret:'da910cf2a45b4dbe9006a99b0ac2efc0',
+				owner: 'raven'},
+			3: {APIKey: 'dae956b6026544528d9a145149191299',
+				APISecret: '3d1c30b4f5d746dab0f467e44a1041f4',
+				owner: 'tanner'} 
+		}
+		var keySelector = Math.floor(Math.random()*4);
+		var choiceKey = keysObj[keySelector].APIKey;
+		var choiceSecret = keysObj[keySelector].APISecret;
+		console.log(keysObj[keySelector].owner);
 	var userUrl = $('#inputImgUrl').val().trim();
 	var APIKey='3a9ca945f04a44bf8f8767ff021d37bc';
 	var APISecret = 'affb8c62eade4475bea1118afb5aa2cf';
 	var settings = {
   "async": true,
   "crossDomain": true,
-  "url": "https://api.skybiometry.com/fc/faces/detect?api_key="+APIKey+"&api_secret="+APISecret+"&urls="+userUrl+"&attributes=all",
+
+  "url": "http://api.skybiometry.com/fc/faces/detect?api_key="+choiceKey+"&api_secret="+choiceSecret+"&urls="+userUrl+"&attributes=all",
+
   "method": "POST",
   "headers": {
     "cache-control": "no-cache",
@@ -172,6 +205,8 @@ $('#submitImgUrl').on('click',function(){
 			}		
 		})
 	};
+	$('.modal').removeClass("loading");	
+		console.timeEnd('timer');
 	});
 
 
@@ -194,7 +229,6 @@ $(document).on('click' , "#addSong" , function(event){
 	 $("#yourIframe").attr("src", targetUrl);
  	});
 });
-
 
 
 
