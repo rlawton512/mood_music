@@ -182,7 +182,7 @@ $(document).ready(function(){
     				$(newDiv).prepend(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
 					randomNumbers.splice(index, 1);
     			}
-    			console.log('it works');
+    			console.log('playlist');
 		});
 			
 		$('#resultsDiv').prepend(newDiv);
