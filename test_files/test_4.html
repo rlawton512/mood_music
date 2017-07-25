@@ -4,6 +4,7 @@
 	<title>Speed Test for Calls</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<style type="text/css">
 		.loading {
@@ -82,18 +83,21 @@ $(document).ready(function(){
 			surprise:resp.photos[0].tags[0].attributes.surprise
 		};
 
+
 		//create a div with the submitted image and the product of the analysis
 		var newDiv = $('<div>');
 		var newImg = $('<img>');
 		$(newImg).attr('src',userUrl);
 		$(newImg).attr('width',320);
 		$(newDiv).append(newImg);
+
 		var emotions=['anger', 'disgust', 'fear', 'happiness', 
 					  'neutral_mood', 'sadness', 'surprise'];
 		var emoResp =[respObj.anger.confidence, respObj.disgust.confidence, 
 					   respObj.fear.confidence, respObj.happiness.confidence, 
 					   respObj.neutral_mood.confidence, respObj.sadness.confidence,
 					   respObj.surprise.confidence];
+
 
 		//charting emotions with google charts
 		google.charts.load("current", {packages:["corechart"]});
@@ -128,11 +132,8 @@ $(document).ready(function(){
           chart.draw(view, options);
         }
   
-		//for (i=0; i<emotions.length; i++){
-			//var newPara = $('<p>');
-			//$(newPara).text(emotions[i]+": "+emoResp[i]);
-			//$(newDiv).append(newPara);
-		//}
+		
+
 
 		//interpret the emotional analysis as numbers, compare the numbers to find the highest,
 		//and report the highest number/emotion
@@ -152,6 +153,7 @@ $(document).ready(function(){
 
 	//split music call into conditions based on emotional results
 	if (mostFitting[1]==="happiness"||mostFitting[1]==="surprise"){
+
 		neem = "happy";
 	}else if (mostFitting[1]==="anger"||mostFitting[1]==="disgust"){
 		neem = "angry";
@@ -161,11 +163,13 @@ $(document).ready(function(){
 		neem = "chill"; 
 
 		var queryURL = "http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag="+neem+"&limit=25&api_key=b164494922abda22f8cd2e53cc25ab4e&format=json";
+
 		 
 		$.ajax({
 			url: queryURL,
 			method: "GET"
 		}).done(function(response){
+
 
 			var musicResponse = response;
 			var randomNumbers = [];
@@ -193,6 +197,7 @@ $(document).ready(function(){
 	$('#inputImgUrl').val('');
 	});
 });
+
 </script>
 </body>
 </html>

@@ -4,11 +4,13 @@
 	<title>Speed Test for Calls</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
 	<style type="text/css">
 		.loading {
 			display: inherit;
 		}
 	</style>
+
 </head>
 <body>
 
@@ -17,8 +19,10 @@
 	<div id="playerButtons">
 	</div>
 
+
 	<div id="resultsDiv">
 	<iframe src="https://giphy.com/embed/6gWNMuQjEVSfK" display="none" width="64" height="64" frameBorder="0" class="giphy-embed modal" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/spinning-6gWNMuQjEVSfK"></a></p>	
+
 	</div>
 </div>
 
@@ -39,10 +43,12 @@
         $('#playerButtons').append(emoButton);
 	}
 
+
 $('.runThis').on('click',function(){
 	event.preventDefault();
 	console.time('timer');
 	$('.modal').addClass("loading");
+
 
 	var userUrl = $(this).attr('data-url');
 	var APIKey='dae956b6026544528d9a145149191299';
@@ -125,7 +131,9 @@ $('.runThis').on('click',function(){
 			console.log(musicResponse.tracks.track[randomNo].url);
 			$(newDiv).append(`<a href=${musicResponse.tracks.track[randomNo].url}> ${musicResponse.tracks.track[randomNo].artist.name +", "+ musicResponse.tracks.track[randomNo].name}</a>`);
 			$('#resultsDiv').prepend(newDiv);
+
 			$('.modal').removeClass("loading");	
+
 			console.timeEnd('timer');		
 		})
 	

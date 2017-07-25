@@ -1,0 +1,37 @@
+.page-header {
+	font-family: 'Fontdiner Swanky', cursive;
+}
+
+#picDisplay {
+	margin-top: 30px;
+}
+
+body {
+	background: url("https://onehdwallpaper.com/wp-content/uploads/2015/07/Beautiful-Music-HD-Wallpapers.jpg");
+}
+
+.container {
+	opacity: 0.9;
+	font-family: 'Fontdiner Swanky', cursive;
+}
+
+.graph {
+	padding: 0px;
+}
+
+
+
+.main {
+	margin-top: 50px;
+}
+
+.page-header {
+	text-align: center;
+}
+
+.heading {
+	margin-bottom: 40px;
+}
+
+
+
