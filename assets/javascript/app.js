@@ -7,7 +7,7 @@ $('#submitImgUrl').on('click',function(){
 			var errorMessage = $('<h3>');
 			$(errorMessage).text('Please input a valid image URL');
 			$(errorMessage).attr('class','inputError');
-			$('#resultsDiv').append(errorMessage);
+			$('#resultsDiv').html(errorMessage);
 			return;
 		}
 
@@ -97,7 +97,7 @@ $('#submitImgUrl').on('click',function(){
             [emotions[3], emoResp[3], "color: #8a2be2"],
             [emotions[4], emoResp[4], "color: #7fff00"],
             [emotions[5], emoResp[5], "color: #ff7f50"],
-            [emotions[6], emoResp[6], "color: #f5f5f5"],
+            [emotions[6], emoResp[6], "color: #800080"],
           ]);
 
           var view = new google.visualization.DataView(data);
